@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--
+    # Buttons visibility GONE | Default
+    -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_baseline_create_24"
+
+            android:visibility="gone"
+            app:backgroundTint="#0027FF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_baseline_image_24"
+            android:visibility="gone"
+            app:backgroundTint="#0027FF"
+            app:layout_constraintBottom_toTopOf="@+id/btn_screenshot_activity"
+            app:layout_constraintEnd_toEndOf="@+id/btn_screenshot_activity"
+            app:layout_constraintStart_toStartOf="@+id/btn_screenshot_activity" />
+
+        <TextView
+            android:id="@+id/add_btn_activity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorWhite"
+
+            android:text="Go to gallery"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_activity"
+            app:layout_constraintEnd_toStartOf="@+id/btn_activity"
+            app:layout_constraintTop_toTopOf="@+id/btn_activity" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_screenshot_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+
+            android:src="@drawable/ic_camera"
+            android:visibility="gone"
+            app:backgroundTint="#0027FF"
+            app:layout_constraintBottom_toTopOf="@+id/btn_screenshot_long"
+            app:layout_constraintEnd_toEndOf="@+id/btn_screenshot_long"
+            app:layout_constraintStart_toStartOf="@+id/btn_screenshot_long" />
+
+        <TextView
+            android:id="@+id/add_btn_screenshot_activity_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+
+            android:background="@color/colorWhite"
+            android:text="Take short screenshot"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_screenshot_activity"
+            app:layout_constraintEnd_toStartOf="@+id/btn_screenshot_activity"
+            app:layout_constraintTop_toTopOf="@+id/btn_screenshot_activity" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_screenshot_long"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_camera"
+
+            android:visibility="gone"
+            app:backgroundTint="#0027FF"
+            app:layout_constraintBottom_toTopOf="@+id/add_fab"
+            app:layout_constraintEnd_toEndOf="@+id/add_fab"
+            app:layout_constraintStart_toStartOf="@+id/add_fab" />
+
+        <TextView
+            android:id="@+id/add_btn_screenshot_long_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+
+            android:background="@color/colorWhite"
+            android:text="Take long screenshot"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_screenshot_long"
+            app:layout_constraintEnd_toStartOf="@+id/btn_screenshot_long"
+            app:layout_constraintTop_toTopOf="@+id/btn_screenshot_long" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_baseline_share_24"
+            android:visibility="gone"
+            app:backgroundTint="#0027FF"
+            app:layout_constraintBottom_toTopOf="@+id/add_fab"
+
+            app:layout_constraintEnd_toEndOf="@+id/add_fab"
+            app:layout_constraintStart_toStartOf="@+id/add_fab" />
+
+        <TextView
+            android:id="@+id/add_btn_share_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorWhite"
+            android:text="Share"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_share"
+            app:layout_constraintEnd_toStartOf="@+id/btn_share"
+            app:layout_constraintTop_toTopOf="@+id/btn_share" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_all_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
+            app:backgroundTint="#0027FF"
+            app:layout_constraintBottom_toTopOf="@+id/add_fab"
+            app:layout_constraintEnd_toEndOf="@+id/add_fab"
+            app:layout_constraintStart_toStartOf="@+id/add_fab" />
+
+        <TextView
+            android:id="@+id/add_btn_delete_all_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorWhite"
+            android:text="Delete all images"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_share"
+            app:layout_constraintEnd_toStartOf="@+id/btn_share"
+            app:layout_constraintTop_toTopOf="@+id/btn_share" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
