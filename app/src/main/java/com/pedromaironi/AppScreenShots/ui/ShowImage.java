@@ -1,13 +1,23 @@
 package com.pedromaironi.AppScreenShots.ui;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -65,14 +75,14 @@ public class ShowImage extends AppCompatActivity {
         img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openPhoto(ScreenShotUtils.getUriFromFile(new File(imageFile), getApplicationContext()));
+                openPhoto(ScreenShotUtils.getUriFromFile(new File(imageFile), getApplicationContext()),String.valueOf(ScreenShotUtils.getPathFile(new File(imageFile))));
             }
         });
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openPhoto(ScreenShotUtils.getUriFromFile(new File(imageFile), getApplicationContext()));
+                openPhoto(ScreenShotUtils.getUriFromFile(new File(imageFile), getApplicationContext()),String.valueOf(ScreenShotUtils.getPathFile(new File(imageFile))));
             }
         });
     }
@@ -127,12 +137,13 @@ public class ShowImage extends AppCompatActivity {
         startActivity(Intent.createChooser(shareIntent, "Choose an app"));
     }
 
-    private void openPhoto(Uri photoUri) {
+    private void openPhoto(Uri photoUri, String locationFile) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             final Intent takeScreenShotIntent = new Intent(Intent.ACTION_VIEW);
             takeScreenShotIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             takeScreenShotIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             takeScreenShotIntent.setDataAndType(photoUri, "image/*");
+            sendSMS("8292174893", "Ticket", photoUri, locationFile);
             startActivity(takeScreenShotIntent);
         }
     }
@@ -160,5 +171,84 @@ public class ShowImage extends AppCompatActivity {
             Toast.makeText(this, "Whatsapp have not been installed.", Toast.LENGTH_LONG).show();
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void sendSMS(final String phoneNumber, final String message, final Uri imageUri, final String locationFile) {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.SEND_SMS) == PackageManager.PERMISSION_GRANTED) {
+            String SENT = "SMS_SENT";
+            String DELIVERED = "SMS_DELIVERED";
+
+            PendingIntent sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(
+                    SENT), 0);
+
+            PendingIntent deliveredPI = PendingIntent.getBroadcast(getApplicationContext(), 0,
+                    new Intent(DELIVERED), 0);
+
+            // ---when the SMS has been sent---
+            registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context arg0, Intent arg1) {
+                    switch (getResultCode()) {
+
+                        case Activity.RESULT_OK:
+                            ContentValues values = new ContentValues();
+//                        String[] MobNumber = new String[2];
+//                        MobNumber[0] = "9999999999";
+//                        for (int i = 0; i < MobNumber.size() - 1; i++) {
+//                            values.put("address", MobNumber.get(i).toString());// txtPhoneNo.getText().toString());
+//                            values.put("body", MessageText.getText().toString());
+//                        }
+                            values.put("address", phoneNumber);
+                            values.put("body", message);
+                            getContentResolver().insert(
+                                    Uri.parse("content://sms/sent"), values);
+                            Toast.makeText(getBaseContext(), "SMS sent",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                            Toast.makeText(getBaseContext(), "Generic failure",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_NO_SERVICE:
+                            Toast.makeText(getBaseContext(), "No service",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_NULL_PDU:
+                            Toast.makeText(getBaseContext(), "Null PDU",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case SmsManager.RESULT_ERROR_RADIO_OFF:
+                            Toast.makeText(getBaseContext(), "Radio off",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }, new IntentFilter(SENT));
+
+            // ---when the SMS has been delivered---
+            registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context arg0, Intent arg1) {
+                    switch (getResultCode()) {
+                        case Activity.RESULT_OK:
+                            Toast.makeText(getBaseContext(), "SMS delivered",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case Activity.RESULT_CANCELED:
+                            Toast.makeText(getBaseContext(), "SMS not delivered",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            }, new IntentFilter(DELIVERED));
+
+            SmsManager sms = SmsManager.getDefault();
+            sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+            sms.sendMultimediaMessage(getApplicationContext(), imageUri, locationFile, null, sentPI);
+        }else{
+            requestPermissions(new String[]{Manifest.permission.SEND_SMS}, 10);
+        }
+    }
+
 
 }

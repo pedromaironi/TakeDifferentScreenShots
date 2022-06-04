@@ -311,7 +311,7 @@ public class ScreenShotUtils {
     public static File createPhotoFile(Context mContext) throws IOException {
         File storageDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         String timestamp = "/" + DateFormat.getDateTimeInstance().format(new Date());
-        return new File(storageDir + timestamp + "jpg");
+        return new File(storageDir + timestamp + ".jpg");
     }
 
     /**

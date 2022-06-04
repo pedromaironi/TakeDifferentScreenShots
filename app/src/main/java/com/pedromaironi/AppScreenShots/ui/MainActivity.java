@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     // Classes
     Permissions mPermissions;
     ScreenShotUtils mScreenShotUtils;
+
     LoadingDialog mLoadingDialog;
 
     // Variables
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         // Init
         mPermissions = new Permissions(this, MainActivity.this);
         mLoadingDialog = new LoadingDialog(this);
+
         mScreenShotUtils = new ScreenShotUtils();
 
         scrollView = (ScrollView) findViewById(R.id.scrollView);
